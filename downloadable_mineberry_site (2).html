@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mineberry YouTube</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #2d5a27 0%, #4a8c3a 50%, #2d5a27 100%);
+            color: white;
+            min-height: 100vh;
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .minecraft-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(45,90,39,0.1) 0%, transparent 2%),
+                linear-gradient(0deg, rgba(45,90,39,0.1) 0%, transparent 2%);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 4px solid #8B4513;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .youtube-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #FF0000, #CC0000);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(255,0,0,0.5),
+                inset 0 4px 8px rgba(255,255,255,0.2);
+            animation: youtubeGlow 3s ease-in-out infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .youtube-logo::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 18px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            left: 50%;
+            top: 50%;
+            transform: translate(-45%, -50%);
+        }
+
+        @keyframes youtubeGlow {
+            0% { box-shadow: 0 0 20px rgba(255,0,0,0.5), inset 0 4px 8px rgba(255,255,255,0.2); }
+            100% { box-shadow: 0 0 30px rgba(255,0,0,0.8), inset 0 4px 8px rgba(255,255,255,0.2); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 
+                3px 3px 0 #8B4513,
+                6px 6px 10px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #90EE90;
+            margin-top: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .youtuber-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .youtuber-card {
+            background: rgba(0,0,0,0.4);
+            border: 3px solid #8B4513;
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+        }
+
+        .youtuber-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border-color: #FFD700;
+        }
+
+        .rank {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #8B4513;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8B4513;
+            box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+        }
+
+        .rank.first {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            animation: goldShine 2s ease-in-out infinite alternate;
+        }
+
+        .rank.second {
+            background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+        }
+
+        .rank.third {
+            background: linear-gradient(135deg, #CD7F32, #B8860B);
+        }
+
+        .rank.fourth {
+            background: linear-gradient(135deg, #90EE90, #32CD32);
+        }
+
+        @keyframes goldShine {
+            0% { box-shadow: 0 4px 15px rgba(255,215,0,0.4); }
+            100% { box-shadow: 0 4px 25px rgba(255,215,0,0.8); }
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            margin-left: 30px;
+        }
+
+        .youtuber-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .youtuber-name {
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .youtuber-description {
+            color: #90EE90;
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+
+        .youtuber-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF0000, #CC0000);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .youtuber-link:hover {
+            background: linear-gradient(135deg, #FF4444, #FF0000);
+            transform: scale(1.05);
+            border-color: #FFD700;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.4);
+        }
+
+        .server-info {
+            background: rgba(0,0,0,0.5);
+            border: 3px solid #8B4513;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem auto;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .server-info h2 {
+            color: #90EE90;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .server-info p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #E6E6FA;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.6);
+            color: #90EE90;
+            border-top: 3px solid #8B4513;
+            margin-top: 3rem;
+        }
+
+        .sparkles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            .card-content { flex-direction: column; gap: 1rem; }
+            .youtuber-info { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="minecraft-bg"></div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <header>
+        <div class="logo-container">
+            <div class="youtube-logo"></div>
+            <h1>The Mineberry YouTube</h1>
+        </div>
+        <p class="subtitle">🎮 Top YouTubers of the Mineberry Server 🎮</p>
+    </header>
+
+    <div class="container">
+        <div class="youtuber-list">
+            <div class="youtuber-card">
+                <div class="rank first">👑</div>
+                <div class="card-content">
+                    <div class="youtuber-info">
+                        <h3 class="youtuber-name">3miro</h3>
+                        <p class="youtuber-description">The King of Mineberry! 🏆</p>
+                    </div>
+                    <a href="https://www.youtube.com/c/elmoha" target="_blank" class="youtuber-link">
+                        📺 Visit Channel
+                    </a>
+                </div>
+            </div>
+
+            <div class="youtuber-card">
+                <div class="rank second">🥈</div>
+                <div class="card-content">
+                    <div class="youtuber-info">
+                        <h3 class="youtuber-name">RonRonMC</h3>
+                        <p class="youtuber-description">The Silver Legend! ⚡</p>
+                    </div>
+                    <a href="https://www.youtube.com/@RonRonMC/videos" target="_blank" class="youtuber-link">
+                        📺 Visit Channel
+                    </a>
+                </div>
+            </div>
+
+            <div class="youtuber-card">
+                <div class="rank third">🥉</div>
+                <div class="card-content">
+                    <div class="youtuber-info">
+                        <h3 class="youtuber-name">Fogo</h3>
+                        <p class="youtuber-description">The Bronze Warrior! 🔥</p>
+                    </div>
+                    <a href="https://www.youtube.com/@fogo257/videos" target="_blank" class="youtuber-link">
+                        📺 Visit Channel
+                    </a>
+                </div>
+            </div>
+
+            <div class="youtuber-card">
+                <div class="rank fourth">4</div>
+                <div class="card-content">
+                    <div class="youtuber-info">
+                        <h3 class="youtuber-name">Elevator</h3>
+                        <p class="youtuber-description">Rising Star! 🌟</p>
+                    </div>
+                    <a href="https://www.youtube.com/@Gwrmace" target="_blank" class="youtuber-link">
+                        📺 Visit Channel
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="server-info">
+            <h2>🎮 About Mineberry Server</h2>
+            <p>Welcome to the Official Mineberry Youtube WebSite where all the Mineberry Youtubers are listed from the BEST to the NOT best, SUBSCRIBE TO 3miro!1!!1!!</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>⚡ The Mineberry YouTube - Where Legends Are Made ⚡</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">🍓 Powered by Berry Energy 🍓</p>
+    </footer>
+
+    <script>
+        // Create animated sparkles
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            const numberOfSparkles = 20;
+
+            for (let i = 0; i < numberOfSparkles; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 4 + 's';
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+
+        // Initialize sparkles when page loads
+        document.addEventListener('DOMContentLoaded', createSparkles);
+
+        // Add hover effects for cards
+        document.querySelectorAll('.youtuber-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // YouTube logo animation on click
+        document.querySelector('.youtube-logo').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'youtubeGlow 0.5s ease-in-out';
+            }, 10);
+        });
+    </script>
+</body>
+</html>
